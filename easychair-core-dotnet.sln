@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "easyinterlock", "easyinterlock\easyinterlock.csproj", "{66D3FA35-CAE0-47AC-92FB-9DDFC29302C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "easychair", "easychair\easychair.csproj", "{8330DB8A-6532-48B9-B071-33208D5D5786}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66D3FA35-CAE0-47AC-92FB-9DDFC29302C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D3FA35-CAE0-47AC-92FB-9DDFC29302C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D3FA35-CAE0-47AC-92FB-9DDFC29302C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D3FA35-CAE0-47AC-92FB-9DDFC29302C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8330DB8A-6532-48B9-B071-33208D5D5786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8330DB8A-6532-48B9-B071-33208D5D5786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8330DB8A-6532-48B9-B071-33208D5D5786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8330DB8A-6532-48B9-B071-33208D5D5786}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21CF1C70-9F74-4556-91DC-FDC2492F76A5}
+	EndGlobalSection
+EndGlobal

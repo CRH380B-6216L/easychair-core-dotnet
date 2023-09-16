@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>easychair_core_dotnet</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="easyinterlock\**" />
+    <EmbeddedResource Remove="easyinterlock\**" />
+    <None Remove="easyinterlock\**" />
+  </ItemGroup>
+
+</Project>
