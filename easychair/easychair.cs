@@ -535,6 +535,14 @@ namespace EasyChair
             slIsSpoken.Add(isSpoken);
             return ++Current;
         }
+    }
 
+    /// <summary>
+    /// 定义计时器。实现该类型需要外部 Timer 控件支持。
+    /// </summary>
+    public class Timer
+    {
+        public int RemainingSecs { get; private set; }
+        private int 
     }
 }
