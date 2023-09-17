@@ -210,13 +210,6 @@ namespace EasyChair
             Topic[1] = topic2;
             TopicSel = TopicSelection.Unchosen;
         }
-        /// <summary>
-        /// 摧毁会议对象。
-        /// </summary>
-        ~Conference()
-        {
-
-        }
 
         /// <summary>
         /// 获取会议议题。
@@ -262,23 +255,24 @@ namespace EasyChair
         /// </summary>
         public bool VetoPower { get; set; } = false;
 
-        public static Nation? Empty = null;
-
         /// <summary>
         /// 初始化国家。
-        /// <param name="name">国家的名称。</param>
         /// </summary>
-        public Nation(string name)
+        /// <param name="name">国家的名称。</param>
+        /// <param name="delegates">可选。该国的所有代表。</param>
+        public Nation(string name, List<Delegate>? delegates = null)
         {
             Name = name;
+            if (delegates != null) Delegates = delegates;
         }
 
         /// <summary>
         /// 初始化国家并设定投票权重。
         /// </summary>
         /// <param name="name">国家的名称。</param>
-        /// <param name="competence">可选。表示该国的投票权重，默认值为 1（一票）。</param>
-        public Nation(string name, int competence) : this(name)
+        /// <param name="delegates">可选。该国的所有代表。</param>
+        /// <param name="competence">表示该国的投票权重，默认值为 1（一票）。</param>
+        public Nation(string name, int competence, List<Delegate>? delegates = null) : this(name, delegates)
         {
             Competence = competence;
         }
@@ -287,42 +281,10 @@ namespace EasyChair
         /// 初始化国家并设定投票权重和一票否决权。
         /// </summary>
         /// <param name="name">国家的名称。</param>
-        /// <param name="competence">可选。表示该国的投票权重，默认值为 1（一票）。</param>
-        /// <param name="vetopower">可选。表示该国是否具有一票否决权。</param>
-        public Nation(string name, int competence, bool vetopower) : this(name, competence)
-        {
-            VetoPower = vetopower;
-        }
-
-        /// <summary>
-        /// 初始化国家并设定代表。
-        /// </summary>
-        /// <param name="name">国家的名称。</param>
         /// <param name="delegates">可选。该国的所有代表。</param>
-        public Nation(string name, List<Delegate> delegates) : this(name)
-        {
-            Delegates = delegates;
-        }
-
-        /// <summary>
-        /// 初始化国家并设定代表和投票权重。
-        /// </summary>
-        /// <param name="name">国家的名称。</param>
-        /// <param name="delegates">可选。该国的所有代表。</param>
-        /// <param name="competence">可选。表示该国的投票权重，默认值为 1（一票）。</param>
-        public Nation(string name, List<Delegate> delegates, int competence) : this(name, delegates)
-        {
-            Competence = competence;
-        }
-
-        /// <summary>
-        /// 初始化国家并设定代表、投票权重和一票否决权。
-        /// </summary>
-        /// <param name="name">国家的名称。</param>
-        /// <param name="delegates">可选。该国的所有代表。</param>
-        /// <param name="competence">可选。表示该国的投票权重，默认值为 1（一票）。</param>
-        /// <param name="vetopower">可选。表示该国是否具有一票否决权。</param>
-        public Nation(string name, List<Delegate> delegates, int competence, bool vetopower) : this(name, delegates, competence)
+        /// <param name="competence">表示该国的投票权重，默认值为 1（一票）。</param>
+        /// <param name="vetopower">表示该国是否具有一票否决权。</param>
+        public Nation(string name, int competence, bool vetopower, List<Delegate>? delegates = null) : this(name, competence, delegates)
         {
             VetoPower = vetopower;
         }
@@ -542,7 +504,181 @@ namespace EasyChair
     /// </summary>
     public class Timer
     {
+        /// <summary>
+        /// 计时器启停状态。
+        /// </summary>
+        public bool IsUp { get; private set; }
+        /// <summary>
+        /// 计时器剩余时长。
+        /// </summary>
         public int RemainingSecs { get; private set; }
-        private int 
+        /// <summary>
+        /// 计时器总时长。
+        /// </summary>
+        internal readonly int TotalSecs;
+        /// <summary>
+        /// 计时器剩余时间不足发出提示时的剩余时间。
+        /// </summary>
+        public int WarningSecs { get; set; }
+
+        /// <summary>
+        /// 初始化计时器。
+        /// </summary>
+        /// <param name="totalsec">设置计时器的总时长，单位为秒。</param>
+        /// <param name="warning">设置计时器剩余时间不足的提示时长，单位为秒。</param>
+        public Timer(int totalsec, int warning = 20)
+        {
+            TotalSecs = totalsec;
+            RemainingSecs = totalsec;
+            WarningSecs = warning;
+        }
+
+        /// <summary>
+        /// 启动计时器。
+        /// </summary>
+        public virtual void Up()
+        {
+            IsUp = true;
+            TimerUp?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// 停止计时器。
+        /// </summary>
+        public virtual void Down()
+        {
+            IsUp = false;
+            TimerDown?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// 将计时器重置为设定时长。
+        /// </summary>
+        public void Reset()
+        {
+            RemainingSecs = TotalSecs;
+            TimerReset?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// 计时器倒数一次。需要外部 Timer 控件支持，并每秒实施一次。
+        /// </summary>
+        public virtual void Tick()
+        {
+            if (RemainingSecs == 0)
+            {
+                TimeOut?.Invoke(this, new EventArgs());
+                Down();
+            }
+            else
+            {
+                if (--RemainingSecs == WarningSecs) TimeWarning?.Invoke(this, new EventArgs());
+            }
+        }
+
+        /// <summary>
+        /// 引发 TimeOut 事件。
+        /// </summary>
+        /// <param name="e">包含事件数据的 EventArgs。</param>
+        protected virtual void OnTimeOut(EventArgs e)
+        {
+            IsUp = false;
+        }
+
+        /// <summary>
+        /// 在计时器启动时发生。
+        /// </summary>
+        public event EventHandler? TimerUp;
+        /// <summary>
+        /// 在计时器停止时发生。
+        /// </summary>
+        public event EventHandler? TimerDown;
+        /// <summary>
+        /// 在计时器重置时发生。
+        /// </summary>
+        public event EventHandler? TimerReset;
+        /// <summary>
+        /// 在计时器时间耗尽时发生。
+        /// </summary>
+        public event EventHandler? TimeOut;
+        /// <summary>
+        /// 在计时器时间剩余不足设定值时发生。
+        /// </summary>
+        public event EventHandler? TimeWarning;
+    }
+
+    /// <summary>
+    /// 定义含有总时长和分时长的双重计时器。实现该类型需要外部 Timer 控件支持。
+    /// </summary>
+    public class DoubleTimer : Timer
+    {
+        /// <summary>
+        /// 该双重计时器携带的分时长计时器。
+        /// </summary>
+        public Timer SingleTimer;
+
+        /// <summary>
+        /// 初始化双重计时器。
+        /// </summary>
+        /// <param name="totalsec">总时长计时器的设定时长，单位为秒。</param>
+        /// <param name="singlesec">分时长计时器的设定时长，单位为秒。</param>
+        /// <param name="warning">设置分时长计时器剩余时间不足的提示时长，单位为秒。</param>
+        public DoubleTimer(int totalsec, int singlesec, int warning) : base(totalsec)
+        {
+            SingleTimer = new Timer(singlesec, warning);
+            SingleTimer.TimeOut += SingleTimer_TimeOut;
+            WarningSecs = -1;
+        }
+
+        /// <summary>
+        /// 启动计时器。将同时启动总时长和分时长计时器。
+        /// </summary>
+        public override void Up()
+        {
+            base.Up();
+            SingleTimer.Up();
+        }
+
+        /// <summary>
+        /// 停止计时器。将同时停止总时长和分时长计时器。
+        /// </summary>
+        public override void Down()
+        {
+            base.Down();
+            SingleTimer.Down();
+        }
+
+        /// <summary>
+        /// 将分时长计时器重置为设定时长。
+        /// </summary>
+        public void ResetSingletimer()
+        {
+            SingleTimer.Reset();
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+            SingleTimer.Tick();
+        }
+
+        /// <summary>
+        /// 获取可加入发言列表的名单长度。
+        /// </summary>
+        /// <returns>可加入名单的总数。</returns>
+        public int GetAvailableSpeeches()
+        {
+            return TotalSecs / SingleTimer.TotalSecs;
+        }
+
+        /// <summary>
+        /// 分时长计时器时间耗尽触发 TimeOut 事件时，停止总时长计时器。
+        /// </summary>
+        /// <param name="sender">对引发事件的对象的引用。</param>
+        /// <param name="e">包含事件数据的 EventArgs。</param>
+        private void SingleTimer_TimeOut(object? sender, EventArgs e)
+        {
+            Down();
+        }
     }
 }

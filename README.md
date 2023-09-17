@@ -16,7 +16,7 @@ EasyChair Core 是 EasyChair 模拟联合国会议主持软件的通用库。该仓库提供的是基于 .
 * [x] 会议类
 * [x] 国家和国家列表
 * [x] 发言名单
-* [ ] 计时器（需要外部`Timer`控件支持）
+* [x] 计时器（需要外部`Timer`控件支持）
 * [ ] 投票
 
 * **EasyInterlock**：便利的会场间联动系统
@@ -35,9 +35,9 @@ EasyChair Core 是 EasyChair 模拟联合国会议主持软件的通用库。该仓库提供的是基于 .
 * Visual Studio（在 Windows 环境下）
 
 ## 下载和使用
-**请注意：** 该仓库提供的内容并非完整的软件，仅包含与软件相关的实现，只能用于应用程序的开发。请访问 [CRH380B-6216L/easychair](https://github.com/CRH380B-6216L/easychair) 获取完整的会议软件。
+**请注意：** 该仓库提供的内容并非完整的软件，仅包含与软件相关的实现，只能用于应用程序的开发。请访问 [CRH380B-6216L/easychair3](https://github.com/CRH380B-6216L/easychair3) 获取完整的会议软件。
 
-使用 `git clone` 克隆该库，或进入 [Releases 页面](https://github.com/CRH380B-6216L/easychair-core-dotnet/releases)下载已编译完成的 DLL 文件。
+使用 `git clone` 克隆该库，~~或进入 [Releases 页面](https://github.com/CRH380B-6216L/easychair-core-dotnet/releases)下载已编译完成的 DLL 文件~~。
 
 使用前，您**不需要**向任何人申请或申报，也**不限制**任何形式的使用、复制、变更、改进、再分发或商业性质销售，但您应依 MIT 协议，在“关于”界面添加本仓库（CRH380B-6216L/easychair-core-dotnet）的 License 声明。
 
@@ -47,8 +47,8 @@ EasyChair Core 是 EasyChair 模拟联合国会议主持软件的通用库。该仓库提供的是基于 .
 #### 基于源代码
 使用 `git clone` 克隆该库，在“解决方案资源管理器”中右键点击您的解决方案，点击`添加(D)->现有项目(E)...`，选择任何您需要的部件的 .csproj 文件。
 
-#### 基于已编译的 DLL 库
-进入 [Releases 页面](https://github.com/CRH380B-6216L/easychair-core-dotnet/releases)下载已编译完成的 DLL 文件，在“解决方案资源管理器”中右键点击您的项目，点击`添加(D)->现有项(G)...`，切换文件类型为“可执行文件”，选择任何您需要的部件的 .dll 文件。
+#### 基于已编译的 DLL 库（暂未提供）
+~~进入 [Releases 页面](https://github.com/CRH380B-6216L/easychair-core-dotnet/releases)下载已编译完成的 DLL 文件，在“解决方案资源管理器”中右键点击您的项目，点击`添加(D)->现有项(G)...`，切换文件类型为“可执行文件”，选择任何您需要的部件的 .dll 文件。~~
 
 ## 声明
 * 本产品基于 MIT 协议开源。
